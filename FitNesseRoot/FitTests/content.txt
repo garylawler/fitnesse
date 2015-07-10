@@ -13,43 +13,121 @@
 |Import          |
 |fitnesse.app.fit|
 
-!|OMDBAPI Column Fixture                      |
+'''''Fixture Gallery'''''
+
+'''Column Fixtures'''
+
+!| OMDBAPI Column Fixture                     |
 |title     |name?     |successResponse?|count?|
-|star wars |Star Wars |True            |0     |
-|goodfellas|Goodfellas|True            |1     |
-|xyzzxy    |null      |False           |2     |
+|star wars |Star Wars |True            |1     |
+|goodfellas|Goodfellas|True            |2     |
+|xyzzxy    |null      |False           |3     |
 
-!|OMDBAPI Column Fixture                  |
+!| OMDBAPI Column Fixture                 |
 |title     |=name?|successResponse?|count?|
-|goodfellas|name1 |True            |0     |
-|casino    |name2 |True            |1     |
+|goodfellas|name1 |True            |4     |
+|casino    |name2 |True            |5     |
 
-!|OMDBAPI Column Fixture                  |
+!| OMDBAPI Column Fixture                 |
 |title=|name?     |successResponse?|count?|
-|name1 |Goodfellas|True            |0     |
-|name2 |Casino    |True            |1     |
+|name1 |Goodfellas|True            |6     |
+|name2 |Casino    |True            |7     |
 
 ----
+'''Do Fixtures'''
 
-!|OMDBAPI Do Fixture                                     |
+!| OMDBAPI Do Fixture                                    |
 |set expected|Goodfellas                                 |
 |query       |goodfellas|with id|tt0099685|and type|movie|
 |Is Expected Title                                       |
 
 ----
+'''Collection Fixtures'''
 
-!|OMDBAPI Array Fixture|goodfellas|
-|title                 |response  |
-|Goodfellas            |True      |
+!| OMDBAPI Array Fixture|goodfellas|
+|title                  |response  |
+|Star Wars              |True      |
+|Goodfellas             |True      |
+|Goodfellas             |True      |
+|Casino                 |True      |
+|Goodfellas             |True      |
+|Casino                 |True      |
+|Goodfellas             |True      |
 
-!|OMDBAPI Row Fixture|goodfellas|
-|title               |response  |
-|Goodfellas          |True      |
+!| OMDBAPI Row Fixture|goodfellas|
+|title                |response  |
+|Goodfellas           |True      |
+
+!| OMDBAPI Set Fixture|
+|title      |response |
+|Star Wars  |True     |
+|Goodfellas |True     |
+|Goodfellas |True     |
+|Goodfellas |True     |
+|Goodfellas |True     |
+|Goodfellas |True     |
+|Casino     |True     |
+|Casino     |True     |
+
+!| OMDBAPI Sub Set Fixture|
+|title        |response   |
+|Star Wars    |True       |
+|Goodfellas   |True       |
 
 ----
+'''Table Fixtures'''
 
-!|OMDBAPI Table Fixture               |
+!| OMDBAPI Table Fixture              |
 |title     |name      |successResponse|
 |star wars |Star Wars |True           |
 |goodfellas|Goodfellas|True           |
 |xyzzxy    |null      |False          |
+
+----
+'''Calculate Fixtures'''
+
+!| OMDBAPI Column Fixture                                             |
+|title     |name?     |=requestsViaGet?|=requestsViaGetWithParameters?|
+|star wars |Star Wars |rvg1            |rvgwp1                        |
+|goodfellas|Goodfellas|rvg2            |rvgwp2                        |
+|xyzzxy    |null      |rvg3            |rvgwp3                        |
+
+Symbols have to be accessed within fixture...
+!| OMDBAPI Calculate Fixture|
+|arg1   |arg2    |  |total  |
+|rvg1   |rvgwp1  |  |14     |
+|rvg2   |rvgwp2  |  |15     |
+|rvg3   |rvgwp3  |  |16     |
+
+!| OMDBAPI Constraint Fixture|
+|arg1           |arg2        |
+|rvgwp1         |rvg1        |
+|rvgwp2         |rvg2        |
+|rvgwp3         |rvg3        |
+
+----
+'''Set Up Fixture'''
+
+!|OMDBAPI Set Up Fixture                          |
+|Requests Via Get|Requests Via Get With Parameters|
+
+----
+'''Sequence Fixtures'''
+
+!| OMDBAPI Sequence Fixture            |
+|setExpected|Goodfellas                |
+|query      |goodfellas|tt0099685|movie|
+|isExpectedTitle                       |
+
+----
+'''Combination Fixture'''
+Think of a "distance between cities" chart
+!| OMDBAPI Combination Fixture|
+|         |2        |3        |
+|1        |3        |4        |
+|2        |4        |5        |
+
+----
+'''Summary Fixture'''
+
+!| SummaryFixture|

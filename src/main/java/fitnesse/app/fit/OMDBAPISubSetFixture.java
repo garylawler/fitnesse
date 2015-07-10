@@ -1,13 +1,14 @@
 package fitnesse.app.fit;
 
-import fitlibrary.ArrayFixture;
+import fitlibrary.SetFixture;
+import fitlibrary.SubsetFixture;
 import fitnesse.app.OMDBAPIClient;
 
-public class OMDBAPIArrayFixture extends ArrayFixture {
+public class OMDBAPISubSetFixture extends SubsetFixture {
 
     OMDBAPIClient omdbapiClient = OMDBAPIClient.getInstance();
 
-    public OMDBAPIArrayFixture() {
+    public OMDBAPISubSetFixture() {
         super();
         // args[] is populated post-construction
         setActualCollection(omdbapiClient.getCachedResults());

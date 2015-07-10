@@ -7,32 +7,42 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OMDBAPIClient extends RestTemplate {
 
     private static final String BASE_URL = "http://www.omdbapi.com/";
-    private MovieInfo cachedResult;
+    private static List<MovieInfo> cachedResults = new ArrayList<MovieInfo>();
     private static OMDBAPIClient instance;
+    private static int requestsViaGet = 0;
+    private static int requestsViaGetWithParameters = 0;
 
     private OMDBAPIClient() {
         super(new HttpComponentsClientHttpRequestFactory(HttpClients.createDefault()));
         getMessageConverters().add(new MappingJackson2HttpMessageConverter());
     }
 
-    public MovieInfo getCachedResult() {
-        return cachedResult;
+    public List<MovieInfo> getCachedResults() {
+        return cachedResults;
     }
 
     public MovieInfo get(String name) {
         MovieInfo movieInfo = getForObject(BASE_URL + "?t=" + name, MovieInfo.class);
-        cachedResult = movieInfo;
+        if(movieInfo.getResponse()){
+            cachedResults.add(movieInfo);
+        }
+        requestsViaGet++;
         return movieInfo;
     }
 
     public MovieInfo get(String name, String id, String type) {
         MovieInfo movieInfo = getForObject(
                 MessageFormat.format(BASE_URL + "?t={0}&type={1}&id={2}", name, type, id), MovieInfo.class);
-        cachedResult = movieInfo;
+        if(movieInfo.getResponse()){
+            cachedResults.add(movieInfo);
+        }
+        requestsViaGetWithParameters++;
         return movieInfo;
     }
 
@@ -41,5 +51,19 @@ public class OMDBAPIClient extends RestTemplate {
             instance = new OMDBAPIClient();
         }
         return instance;
+    }
+
+    public int getRequestsViaGet() {
+        return requestsViaGet;
+    }
+
+    public int getRequestsViaGetWithParameters() {
+        return requestsViaGetWithParameters;
+    }
+
+    public void resetCounts() {
+        requestsViaGet = 0;
+        requestsViaGetWithParameters = 0;
+        cachedResults = new ArrayList<MovieInfo>();
     }
 }

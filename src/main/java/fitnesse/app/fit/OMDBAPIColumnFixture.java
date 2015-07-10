@@ -2,6 +2,7 @@ package fitnesse.app.fit;
 
 import fit.ColumnFixture;
 import fitnesse.app.OMDBAPIClient;
+import fitnesse.app.model.MovieInfo;
 
 public class OMDBAPIColumnFixture extends ColumnFixture {
 
@@ -9,7 +10,7 @@ public class OMDBAPIColumnFixture extends ColumnFixture {
     private String expected;
     private String name;
     private String successResponse;
-    private int theCount = 0;
+    private MovieInfo movieInfo;
 
     OMDBAPIClient omdbapiClient = OMDBAPIClient.getInstance();
 
@@ -22,14 +23,24 @@ public class OMDBAPIColumnFixture extends ColumnFixture {
     }
 
     public String name() {
-        return omdbapiClient.get(title).getTitle();
+        movieInfo = omdbapiClient.get(title);
+
+        return movieInfo.getTitle();
     }
 
     public boolean successResponse() {
-        return omdbapiClient.get(title).getResponse();
+        return movieInfo.getResponse();
+    }
+
+    public int requestsViaGet() {
+        return omdbapiClient.getRequestsViaGet();
+    }
+
+    public int requestsViaGetWithParameters() {
+        return omdbapiClient.getRequestsViaGetWithParameters();
     }
 
     public int count() {
-        return theCount++;
+        return omdbapiClient.getRequestsViaGet() + omdbapiClient.getRequestsViaGetWithParameters();
     }
 }
